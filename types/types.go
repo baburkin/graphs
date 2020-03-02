@@ -23,17 +23,20 @@ type DirectedEdge interface {
 
 // UndirectedGraph interface provides API to work with undirected graphs
 type UndirectedGraph interface {
-	AddEdge(v int, w int)
+	AddEdge(v Vertex, w Vertex)
 	Edges() []Edge
 	Vertices() []Vertex
 }
 
 // DirectedGraph interface provides API to work with directed graphs
 type DirectedGraph interface {
-	AddEdge(v int, w int)
-	Edges() []DirectedEdge
-	Vertices() []Vertex
-	OutDegree(vertex int) int
-	InDegree(vertex int) int
+	// Add edge v -> w
+	AddEdge(v Vertex, w Vertex)
+	// All adjacent edges to the vertex v
+	Edges(v Vertex) []DirectedEdge
+	AllEdges() []DirectedEdge
+	AllVertices() []Vertex
+	OutDegree(v Vertex) int
+	InDegree(v Vertex) int
 	Reverse() *DirectedGraph
 }
