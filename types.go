@@ -1,4 +1,4 @@
-package types
+package graphs
 
 // Bag type is a generic collection
 type Bag interface {

@@ -3,18 +3,16 @@ package main
 // This is a sample usage
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
 	"github.com/baburkin/graphs"
-	"github.com/baburkin/graphs/types"
 )
 
 func main() {
 	// Create a graph var
-	var graph types.DirectedGraph
-	// graph := graphs.NewDirectedGraph()
-	graph = graphs.NewDirectedGraph()
+	graph := new(graphs.DirectedGraph)
 
 	// Create a new reader from a file
 	in, err := os.Open("sample_graph.txt")
@@ -24,7 +22,7 @@ func main() {
 	}
 
 	// Initialize graph from a Reader
-	graph.Init(in)
+	graph.Init(bufio.NewReader(in))
 
 	if err, sortedGraph := graph.TopoSort(); err != nil {
 		fmt.Println("Cannot do topological sort - the graph has cycles.")

@@ -1,10 +1,11 @@
 package graphs
 
-// Determines if the directed graph is a DAG (directed acyclic graph)
-func (g *Topological) IsDAG() bool {
-
+// IsDAG determines if the directed graph is a DAG (directed acyclic graph)
+func (*Topological) IsDAG() bool {
+	return false
 }
 
-func (g *Topological) Rank(v Vertex) {
-
+// Rank shows the rank of the vertex if topological sort exists, -1 otherwise
+func (*Topological) Rank(v Vertex) int {
+	return 0
 }
