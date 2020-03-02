@@ -11,14 +11,21 @@ type Vertex struct {
 
 // Edge type is a generic type for graph's edges
 type Edge struct {
-	source *Vertex,
-	dest *Vertex,
+	source *Vertex
+	dest   *Vertex
 }
 
-type UndirectedGraph struct {
-
+// DirectedEdge provides a special kind of edge which has direction.
+// Used in DirectedGraph's
+type DirectedEdge interface {
 }
 
-type DirectedGraph struct {
-	
+// UndirectedGraph interface provides API to work with undirected graphs
+type UndirectedGraph interface {
+}
+
+// DirectedGraph interface provides API to work with directed graphs
+type DirectedGraph interface {
+	Edges() []DirectedEdge
+	Vertices() []Vertex
 }
