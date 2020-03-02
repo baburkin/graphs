@@ -1,17 +1,18 @@
 package graphs
 
-// Bag type is a generic collection
-type Bag interface {
-	Contains() bool
+// VertexIterator type is a generic iterable collection
+type VertexIterator interface {
+	HasNext() bool
+	Next() (int, error)
 }
 
 // Vertex type is a generic type for graph's vertices
 type Vertex struct{}
 
-// Edge type is a generic type for graph's edges
+// Edge type is a generic struct for (un)directed graph's edges
 type Edge struct {
-	v Vertex
-	w Vertex
+	v int
+	w int
 }
 
 // DirectedEdge provides a special kind of edge which has direction.
@@ -26,22 +27,4 @@ type UndirectedGraph interface {
 	AddEdge(v Vertex, w Vertex)
 	Edges() []Edge
 	Vertices() []Vertex
-}
-
-type digraph struct {
-	vertices []Vertex
-	edges    []Edge
-}
-
-// DirectedGraph interface provides API to work with directed graphs
-type DirectedGraph interface {
-	// Add edge v -> w
-	AddEdge(v Vertex, w Vertex)
-	// All adjacent edges to the vertex v
-	Edges(v Vertex) []DirectedEdge
-	AllEdges() []DirectedEdge
-	AllVertices() []Vertex
-	OutDegree(v Vertex) int
-	InDegree(v Vertex) int
-	Reverse() *DirectedGraph
 }
