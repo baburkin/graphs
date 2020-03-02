@@ -1,10 +1,12 @@
 package graphs
 
 type digraph struct {
-	vertices []int
-	edges    map[int][]int
-	vOrder   int
-	eOrder   int
+	vertices  []int
+	edges     map[int][]int
+	vOrder    int
+	eOrder    int
+	outdegree []int
+	indegree  []int
 }
 
 // DirectedGraph interface provides API to work with directed graphs
@@ -13,18 +15,31 @@ type DirectedGraph interface {
 	AddEdge(v int, w int)
 	// All adjacent edges to the int v
 	Edges(v int) []int
+	// All edges in the digraph
 	AllEdges() map[int][]int
+	// All vertices in the digraph
 	AllVertices() []int
+	// How many edges are originating from v
 	OutDegree(v int) int
+	// How many edges are incident to v
 	InDegree(v int) int
+	// Reverse direction of all edges
 	Reverse() *DirectedGraph
 }
 
-func (*digraph) AddEdge(v int, w int) {
+func (g *digraph) AddEdge(v int, w int) {
 
 }
 
 func (g *digraph) Edges(v int) []int {
+	return g.edges[v]
+}
+
+func (g *digraph) AllEdges() map[int][]int {
+	return g.edges
+}
+
+func (g *digraph) OutDegree(v int) {
 	return g.edges[v]
 }
 
