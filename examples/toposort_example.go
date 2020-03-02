@@ -1,4 +1,4 @@
-package examples
+package main
 
 // This is a sample usage
 
@@ -7,12 +7,14 @@ import (
 	"os"
 
 	"github.com/baburkin/graphs"
+	"github.com/baburkin/graphs/types"
 )
 
 func main() {
 	// Create a graph var
+	var graph types.DirectedGraph
 	// graph := graphs.NewDirectedGraph()
-	graph := graphs.NewDirectedGraph()
+	graph = graphs.NewDirectedGraph()
 
 	// Create a new reader from a file
 	in, err := os.Open("sample_graph.txt")
