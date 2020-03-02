@@ -6,12 +6,12 @@ type Bag interface {
 }
 
 // Vertex type is a generic type for graph's vertices
-type Vertex interface{}
+type Vertex struct{}
 
 // Edge type is a generic type for graph's edges
-type Edge interface {
-	V() Vertex
-	W() Vertex
+type Edge struct {
+	v Vertex
+	w Vertex
 }
 
 // DirectedEdge provides a special kind of edge which has direction.
@@ -26,6 +26,11 @@ type UndirectedGraph interface {
 	AddEdge(v Vertex, w Vertex)
 	Edges() []Edge
 	Vertices() []Vertex
+}
+
+type digraph struct {
+	vertices []Vertex
+	edges    []Edge
 }
 
 // DirectedGraph interface provides API to work with directed graphs

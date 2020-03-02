@@ -11,9 +11,6 @@ import (
 )
 
 func main() {
-	// Create a graph var
-	graph := new(graphs.DirectedGraph)
-
 	// Create a new reader from a file
 	in, err := os.Open("sample_graph.txt")
 	if err != nil {
@@ -22,9 +19,9 @@ func main() {
 	}
 
 	// Initialize graph from a Reader
-	graph.Init(bufio.NewReader(in))
+	graph := graphs.InitDirectedGraph(bufio.NewReader(in))
 
-	if err, sortedGraph := graph.TopoSort(); err != nil {
+	if err, sortedGraph := graphs.TopoSort(graph); err != nil {
 		fmt.Println("Cannot do topological sort - the graph has cycles.")
 	} else {
 		fmt.Printf("Topologically sorted graph:\n%v\n", sortedGraph)
