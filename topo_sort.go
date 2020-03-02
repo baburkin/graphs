@@ -5,6 +5,6 @@ type Topological struct {
 }
 
 // TopoSort sorts the directed graph in topological order
-func TopoSort(g *DirectedGraph) (*DirectedGraph, error) {
+func TopoSort(g DirectedGraph) (DirectedGraph, error) {
 	return nil, nil
 }

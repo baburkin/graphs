@@ -10,7 +10,10 @@ import (
 
 func main() {
 	// Initialize graph from a Reader
-	graph := graphs.InitDirectedGraph("directed_7.txt")
+	graph, err := graphs.InitDirectedGraph("directed_7.txt")
+	if err != nil {
+		fmt.Printf("Got an error: %v\n", err)
+	}
 
 	if err, sortedGraph := graphs.TopoSort(graph); err != nil {
 		fmt.Println("Cannot do topological sort - the graph has cycles.")
