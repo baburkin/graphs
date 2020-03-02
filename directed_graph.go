@@ -1,14 +1,10 @@
 package graphs
 
-import (
-	"io"
-	"io/ioutil"
-	"os"
-)
-
 type digraph struct {
 	vertices []int
 	edges    map[int][]int
+	vOrder   int
+	eOrder   int
 }
 
 // DirectedGraph interface provides API to work with directed graphs
@@ -28,22 +24,25 @@ func (*digraph) AddEdge(v int, w int) {
 
 }
 
+func (g *digraph) Edges(v int) []int {
+	return g.edges[v]
+}
+
 func checkIOError(err error) {
 	if err != nil {
-		panic("Error reading from file: " + err);
+		panic(err)
 	}
 }
 
 // InitDirectedGraph initializes a new instance of DirectedGraph
 // and populates from io.Reader instance.
 func InitDirectedGraph(filename string) *DirectedGraph {
-	var g *DirectedGraph
-	g = make(digraph)
-	g.vertices = make([]int, 10)
+	g := new(digraph)
+	g.vertices = make([]int, 0, 10)
 	g.edges = make(map[int][]int)
-	bytesRead, err := ioutil.ReadFile(filename)
-	checkIOError(err);
-	return g;
-}
+	// bytesRead, err := ioutil.ReadFile(filename)
+	// checkIOError(err)
+	// scanner := bufio.NewScanner(nil)
 
-func (g *digraph) 
+	return nil
+}
