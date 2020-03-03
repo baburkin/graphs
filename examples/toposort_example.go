@@ -1,6 +1,6 @@
 package main
 
-// This is a sample usage
+// This is a sample usage of graphs package
 
 import (
 	"fmt"
@@ -10,14 +10,15 @@ import (
 )
 
 func main() {
-	// Initialize graph from a Reader
+	// Initialize a directed graph from a file
 	graph, err := graphs.InitDirectedGraphFromFile("examples/cycled_7.txt")
 	if err != nil {
 		fmt.Printf("Got an error: %v\n", err)
 		os.Exit(2)
 	}
-	fmt.Printf("Graph: %v\n", graph)
+	fmt.Printf("Initial graph: %v\n", graph)
 
+	// Get a reversed graph
 	reversedGraph := graph.Reverse()
 	fmt.Printf("Reversed graph: %v\n", reversedGraph)
 

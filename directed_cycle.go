@@ -24,7 +24,7 @@ func initDFSCycle(g DirectedGraph) *directedCycle {
 	return dc
 }
 
-func dfsFindCycle(dc *directedCycle, v int) {
+func findCycleDFS(dc *directedCycle, v int) {
 	dc.onStack[v] = true
 	dc.marked[v] = true
 	for _, w := range dc.Edges(v) {
@@ -34,7 +34,7 @@ func dfsFindCycle(dc *directedCycle, v int) {
 			return
 		} else if !dc.marked[w] { // do DFS when found unvisited vertex
 			dc.edgeTo[w] = v
-			dfsFindCycle(dc, w)
+			findCycleDFS(dc, w)
 		} else if dc.onStack[w] { // push the cycle to stack if w is on the stack
 			dc.cycle = make([]int, 0)
 			for x := v; x != w; x = dc.edgeTo[x] {
@@ -52,13 +52,8 @@ func IsDAG(g DirectedGraph) bool {
 	dc := initDFSCycle(g)
 	for v := 0; v < dc.VNum(); v++ {
 		if !dc.marked[v] && len(dc.cycle) == 0 {
-			dfsFindCycle(dc, v)
+			findCycleDFS(dc, v)
 		}
 	}
 	return len(dc.cycle) == 0
-}
-
-// Rank shows the rank of the vertex if topological sort exists, -1 otherwise
-func Rank(g DirectedGraph, v Vertex) int {
-	return -1
 }

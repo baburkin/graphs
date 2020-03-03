@@ -9,8 +9,9 @@ This library provides simple API (data structures and set of algorithms) to use 
 ```go
 package main
 
+// This is a sample usage of graphs package
+
 import (
-	"bufio"
 	"fmt"
 	"os"
 
@@ -18,20 +19,22 @@ import (
 )
 
 func main() {
-	// Create a new reader from a file
-	in, err := os.Open("sample_graph.txt")
+	// Initialize a directed graph from a file
+	graph, err := graphs.InitDirectedGraphFromFile("examples/cycled_7.txt")
 	if err != nil {
-		fmt.Println("Error opening input file.")
+		fmt.Printf("Got an error: %v\n", err)
 		os.Exit(2)
 	}
+	fmt.Printf("Initial graph: %v\n", graph)
 
-	// Initialize graph from a Reader
-	graph := graphs.InitDirectedGraph(bufio.NewReader(in))
+	// Get a reversed graph
+	reversedGraph := graph.Reverse()
+	fmt.Printf("Reversed graph: %v\n", reversedGraph)
 
-	if err, sortedGraph := graphs.TopoSort(graph); err != nil {
-		fmt.Println("Cannot do topological sort - the graph has cycles.")
+	if order, err := graphs.TopoSort(graph); err != nil {
+		fmt.Printf("Cannot do topological sort: %v\n", err)
 	} else {
-		fmt.Printf("Topologically sorted graph:\n%v\n", sortedGraph)
+		fmt.Printf("Topologically sorted graph (vertex order):\n%v\n", order)
 	}
 }
 

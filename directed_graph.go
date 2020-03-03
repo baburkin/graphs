@@ -82,9 +82,9 @@ func (g *digraph) InDegree(v int) int {
 
 func (g *digraph) Reverse() DirectedGraph {
 	gNew := InitDirectedGraph(g.V)
-	for v := 0; v < g.V; v++ {
-		if g.edges[v] != nil {
-			for _, w := range g.edges[v] {
+	for v, e := range g.edges {
+		if len(e) > 0 {
+			for _, w := range e {
 				gNew.AddEdge(w, v)
 			}
 		}
