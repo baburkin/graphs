@@ -19,12 +19,12 @@ type EdgeIterator interface {
 }
 
 // Vertex type is a generic type for graph's vertices
-type Vertex struct{}
+type Vertex interface{}
 
 // Edge type is a generic struct for (un)directed graph's edges
 type Edge struct {
-	v int
-	w int
+	v Vertex
+	w Vertex
 }
 
 func (e Edge) String() string {
