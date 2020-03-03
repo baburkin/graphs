@@ -21,9 +21,9 @@ func main() {
 	reversedGraph := graph.Reverse()
 	fmt.Printf("Reversed graph: %v\n", reversedGraph)
 
-	if err, sortedGraph := graphs.TopoSort(&graph); err != nil {
+	if order, err := graphs.TopoSort(graph); err != nil {
 		fmt.Println("Cannot do topological sort - the graph has cycles.")
 	} else {
-		fmt.Printf("Topologically sorted graph:\n%v\n", sortedGraph)
+		fmt.Printf("Topologically sorted graph (vertex order):\n%v\n", order)
 	}
 }
