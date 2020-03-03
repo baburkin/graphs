@@ -9,24 +9,25 @@ import (
 )
 
 type digraph struct {
-	vertices []int
 	edges    map[int][]int
-	vOrder   int
-	eOrder   int
+	V        int
+	E        int
 	indegree []int
 }
 
 // DirectedGraph interface provides API to work with directed graphs
 type DirectedGraph interface {
+	// Number of vertices
+	VNum() int
+	// Number of edges
+	ENum() int
 	// Add edge v -> w
-	AddEdge(v int, w int)
+	AddEdge(v int, w int) bool
 	// All adjacent edges to the int v
 	Edges(v int) []int
 	// All edges in the digraph
 	AllEdges() map[int][]int
 	// All vertices in the digraph
-	AllVertices() []int
-	// How many edges are originating from v
 	OutDegree(v int) int
 	// How many edges are incident to v
 	InDegree(v int) int
@@ -34,8 +35,24 @@ type DirectedGraph interface {
 	Reverse() DirectedGraph
 }
 
-func (g *digraph) AddEdge(v int, w int) {
+func (g *digraph) isVertexValid(v int) bool {
+	return v >= 0 && v < g.V
+}
 
+func (g *digraph) VNum() int {
+	return g.V
+}
+
+func (g *digraph) ENum() int {
+	return g.E
+}
+
+func (g *digraph) AddEdge(v int, w int) bool {
+	if g.isVertexValid(v) && g.isVertexValid(w) {
+		g.edges[v] = append(g.edges[v], w)
+		return true
+	}
+	return false
 }
 
 func (g *digraph) Edges(v int) []int {
@@ -44,10 +61,6 @@ func (g *digraph) Edges(v int) []int {
 
 func (g *digraph) AllEdges() map[int][]int {
 	return g.edges
-}
-
-func (g *digraph) AllVertices() []int {
-	return g.vertices
 }
 
 func (g *digraph) OutDegree(v int) int {
@@ -59,7 +72,11 @@ func (g *digraph) InDegree(v int) int {
 }
 
 func (g *digraph) Reverse() DirectedGraph {
-	return g
+	gNew := new(digraph)
+	gNew.E = g.E
+	gNew.V = g.V
+
+	return gNew
 }
 
 func checkIOError(err error) {
@@ -69,10 +86,19 @@ func checkIOError(err error) {
 }
 
 // InitDirectedGraph initializes a new instance of DirectedGraph
-// and populates from io.Reader instance.
-func InitDirectedGraph(filename string) (DirectedGraph, error) {
+// with a given number of vertices
+func InitDirectedGraph(verticesNum int) (DirectedGraph, error) {
 	g := new(digraph)
+	g.V = verticesNum
+	g.E = 0
 	g.edges = make(map[int][]int)
+	return g, nil
+}
+
+// InitDirectedGraph initializes a new instance of DirectedGraph
+// from a file.
+func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
+	g := new(digraph)
 	r, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -94,10 +120,9 @@ func InitDirectedGraph(filename string) (DirectedGraph, error) {
 			return nil, err
 		}
 		fmt.Printf("Our directed graph has [%d] elements.\n", size)
-		g.vOrder = size
-		g.eOrder = 0
-		g.vertices = make([]int, g.vOrder, g.vOrder)
-		g.indegree = make([]int, g.vOrder, g.vOrder)
+		g.V = size
+		g.E = 0
+		g.indegree = make([]int, g.V, g.V)
 		g.edges = make(map[int][]int)
 	}
 
@@ -115,9 +140,11 @@ func InitDirectedGraph(filename string) (DirectedGraph, error) {
 			if g.edges[v] == nil {
 				g.edges[v] = make([]int, 1)
 			}
-			g.edges[v] = append(g.edges[v], w)
+			if !g.AddEdge(v, w) {
+				fmt.Printf("Could not add edge [%d -> %d].\n", v, w)
+			}
 			g.indegree[w]++
-			g.eOrder++
+			g.E++
 		} else {
 			return g, errors.New("The input data has wrong format")
 		}

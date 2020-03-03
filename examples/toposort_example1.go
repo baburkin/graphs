@@ -4,15 +4,17 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/baburkin/graphs"
 )
 
 func main() {
 	// Initialize graph from a Reader
-	graph, err := graphs.InitDirectedGraph("directed_7.txt")
+	graph, err := graphs.InitDirectedGraphFromFile("examples/directed_7.txt")
 	if err != nil {
 		fmt.Printf("Got an error: %v\n", err)
+		os.Exit(2)
 	}
 
 	if err, sortedGraph := graphs.TopoSort(graph); err != nil {
