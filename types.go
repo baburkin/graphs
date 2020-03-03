@@ -1,3 +1,7 @@
+// Copyright 2020 Dmitry Baburkin
+
+// Package graphs implements some graphs data structures
+// and algorithms
 package graphs
 
 import "fmt"
