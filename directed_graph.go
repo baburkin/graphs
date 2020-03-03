@@ -17,22 +17,14 @@ type digraph struct {
 
 // DirectedGraph interface provides API to work with directed graphs
 type DirectedGraph interface {
-	// Number of vertices
-	VNum() int
-	// Number of edges
-	ENum() int
-	// Add edge v -> w
-	AddEdge(v int, w int) bool
-	// All adjacent edges to the int v
-	Edges(v int) []int
-	// All edges in the digraph
-	AllEdges() map[int][]int
-	// All vertices in the digraph
-	OutDegree(v int) int
-	// How many edges are incident to v
-	InDegree(v int) int
-	// Reverse direction of all edges
-	Reverse() DirectedGraph
+	VNum() int                 // Number of vertices
+	ENum() int                 // Number of edges
+	AddEdge(v int, w int) bool // Add edge v -> w
+	Edges(v int) []int         // All adjacent edges to the int v
+	AllEdges() map[int][]int   // All edges in the digraph
+	OutDegree(v int) int       // All vertices in the digraph
+	InDegree(v int) int        // How many edges are incident to v
+	Reverse() DirectedGraph    // Reverse direction of all edges
 }
 
 func (g *digraph) String() string {
