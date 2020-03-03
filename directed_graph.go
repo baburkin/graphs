@@ -57,7 +57,7 @@ func (g *digraph) ENum() int {
 func (g *digraph) AddEdge(v int, w int) bool {
 	if g.isVertexValid(v) && g.isVertexValid(w) {
 		g.edges[v] = append(g.edges[v], w)
-		g.indegree[v]++
+		g.indegree[w]++
 		g.E++
 		return true
 	}
