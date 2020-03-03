@@ -1,10 +1,11 @@
 package graphs
 
-// Topological allows you to run topological sort algorithm on directed graphs
-type TopologicalSort interface {
-}
+// TopoSort sorts the directed graph in topological order and returns the ordered slice of vertices
+func TopoSort(g DirectedGraph) ([]int, error) {
+	if IsDAG(g) {
+		order := make([]int, g.VNum(), g.VNum())
 
-// TopoSort sorts the directed graph in topological order
-func TopoSort(g *DirectedGraph) (DirectedGraph, error) {
+		return order, nil
+	}
 	return nil, nil
 }
