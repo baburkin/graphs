@@ -1,5 +1,7 @@
 package graphs
 
+import "fmt"
+
 type directedCycle struct {
 	DirectedGraph
 	marked  []bool
@@ -8,16 +10,21 @@ type directedCycle struct {
 	cycle   []int
 }
 
+func (dc *directedCycle) String() string {
+	return fmt.Sprintf("marked: [%v], cycle: [%v]\n", dc.marked, dc.cycle)
+}
+
 func initDFSCycle(g DirectedGraph) *directedCycle {
 	dc := new(directedCycle)
 	dc.DirectedGraph = g
 	dc.marked = make([]bool, g.VNum(), g.VNum())
 	dc.onStack = make([]bool, g.VNum(), g.VNum())
 	dc.edgeTo = make([]int, g.VNum(), g.VNum())
+	dc.cycle = make([]int, 0, 0)
 	return dc
 }
 
-func dfsCycle(dc *directedCycle, v int) {
+func dfsFindCycle(dc *directedCycle, v int) {
 	dc.onStack[v] = true
 	dc.marked[v] = true
 	for _, w := range dc.Edges(v) {
@@ -27,7 +34,7 @@ func dfsCycle(dc *directedCycle, v int) {
 			return
 		} else if !dc.marked[w] { // do DFS when found unvisited vertex
 			dc.edgeTo[w] = v
-			dfsCycle(dc, w)
+			dfsFindCycle(dc, w)
 		} else if dc.onStack[w] { // push the cycle to stack if w is on the stack
 			dc.cycle = make([]int, 0)
 			for x := v; x != w; x = dc.edgeTo[x] {
@@ -43,8 +50,12 @@ func dfsCycle(dc *directedCycle, v int) {
 // IsDAG determines if the directed graph is a DAG (directed acyclic graph)
 func IsDAG(g DirectedGraph) bool {
 	dc := initDFSCycle(g)
-
-	return true
+	for v := 0; v < dc.VNum(); v++ {
+		if !dc.marked[v] && len(dc.cycle) == 0 {
+			dfsFindCycle(dc, v)
+		}
+	}
+	return len(dc.cycle) == 0
 }
 
 // Rank shows the rank of the vertex if topological sort exists, -1 otherwise

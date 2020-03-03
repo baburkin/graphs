@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// Initialize graph from a Reader
-	graph, err := graphs.InitDirectedGraphFromFile("examples/directed_7.txt")
+	graph, err := graphs.InitDirectedGraphFromFile("examples/cycled_7.txt")
 	if err != nil {
 		fmt.Printf("Got an error: %v\n", err)
 		os.Exit(2)
@@ -22,7 +22,7 @@ func main() {
 	fmt.Printf("Reversed graph: %v\n", reversedGraph)
 
 	if order, err := graphs.TopoSort(graph); err != nil {
-		fmt.Println("Cannot do topological sort - the graph has cycles.")
+		fmt.Printf("Cannot do topological sort: %v\n", err)
 	} else {
 		fmt.Printf("Topologically sorted graph (vertex order):\n%v\n", order)
 	}
