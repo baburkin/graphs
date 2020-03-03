@@ -8,6 +8,12 @@ type VertexIterator interface {
 	Next() (int, error)
 }
 
+// EdgeIterator interface provides a way to
+type EdgeIterator interface {
+	HasNext() bool
+	Next() Edge
+}
+
 // Vertex type is a generic type for graph's vertices
 type Vertex struct{}
 
