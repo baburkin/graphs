@@ -1,5 +1,7 @@
 package graphs
 
+import "fmt"
+
 // VertexIterator type is a generic iterable collection
 type VertexIterator interface {
 	HasNext() bool
@@ -13,6 +15,10 @@ type Vertex struct{}
 type Edge struct {
 	v int
 	w int
+}
+
+func (e Edge) String() string {
+	return fmt.Sprintf("Edge(%v -> %v)", e.v, e.w)
 }
 
 // DirectedEdge provides a special kind of edge which has direction.

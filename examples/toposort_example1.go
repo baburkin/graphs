@@ -16,8 +16,12 @@ func main() {
 		fmt.Printf("Got an error: %v\n", err)
 		os.Exit(2)
 	}
+	fmt.Printf("Graph: %v\n", graph)
 
-	if err, sortedGraph := graphs.TopoSort(graph); err != nil {
+	reversedGraph := graph.Reverse()
+	fmt.Printf("Reversed graph: %v\n", reversedGraph)
+
+	if err, sortedGraph := graphs.TopoSort(&graph); err != nil {
 		fmt.Println("Cannot do topological sort - the graph has cycles.")
 	} else {
 		fmt.Printf("Topologically sorted graph:\n%v\n", sortedGraph)

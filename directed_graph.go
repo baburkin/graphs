@@ -35,6 +35,13 @@ type DirectedGraph interface {
 	Reverse() DirectedGraph
 }
 
+func (g *digraph) String() string {
+	return fmt.Sprintf("DirectedGraph("+
+		"vertices: [%v]; "+
+		"edges: %v; "+
+		"in degree %v)", g.V, g.edges, g.indegree)
+}
+
 func (g *digraph) isVertexValid(v int) bool {
 	return v >= 0 && v < g.V
 }
@@ -50,6 +57,8 @@ func (g *digraph) ENum() int {
 func (g *digraph) AddEdge(v int, w int) bool {
 	if g.isVertexValid(v) && g.isVertexValid(w) {
 		g.edges[v] = append(g.edges[v], w)
+		g.indegree[v]++
+		g.E++
 		return true
 	}
 	return false
@@ -72,10 +81,14 @@ func (g *digraph) InDegree(v int) int {
 }
 
 func (g *digraph) Reverse() DirectedGraph {
-	gNew := new(digraph)
-	gNew.E = g.E
-	gNew.V = g.V
-
+	gNew := InitDirectedGraph(g.V)
+	for v := 0; v < g.V; v++ {
+		if g.edges[v] != nil {
+			for _, w := range g.edges[v] {
+				gNew.AddEdge(w, v)
+			}
+		}
+	}
 	return gNew
 }
 
@@ -87,18 +100,18 @@ func checkIOError(err error) {
 
 // InitDirectedGraph initializes a new instance of DirectedGraph
 // with a given number of vertices
-func InitDirectedGraph(verticesNum int) (DirectedGraph, error) {
+func InitDirectedGraph(verticesNum int) DirectedGraph {
 	g := new(digraph)
 	g.V = verticesNum
 	g.E = 0
-	g.edges = make(map[int][]int)
-	return g, nil
+	g.edges = make(map[int][]int, verticesNum)
+	g.indegree = make([]int, verticesNum, verticesNum)
+	return g
 }
 
-// InitDirectedGraph initializes a new instance of DirectedGraph
+// InitDirectedGraphFromFile initializes a new instance of DirectedGraph
 // from a file.
 func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
-	g := new(digraph)
 	r, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -106,49 +119,37 @@ func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
 	scanner := bufio.NewScanner(r)
 	scanner.Split(bufio.ScanWords)
 
-	if scanner.Scan() {
-		gType := scanner.Text() // 'u', 'd', 'uw', 'dw' ...
-		if gType != "d" {
-			return nil, errors.New("the graph is not directed")
-		}
-		fmt.Printf("Directed graph it is!\n")
-	}
-
+	// First number should indicate the order of the graph (number of vertices)
 	if scanner.Scan() {
 		size, err := strconv.Atoi(scanner.Text())
 		if err != nil {
 			return nil, err
 		}
-		fmt.Printf("Our directed graph has [%d] elements.\n", size)
-		g.V = size
-		g.E = 0
-		g.indegree = make([]int, g.V, g.V)
-		g.edges = make(map[int][]int)
-	}
+		// fmt.Printf("Our directed graph has [%d] elements.\n", size)
+		g := InitDirectedGraph(size)
 
-	for scanner.Scan() {
-		v, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			return g, err
-		}
-		if scanner.Scan() {
-			w, err := strconv.Atoi(scanner.Text())
+		for scanner.Scan() {
+			v, err := strconv.Atoi(scanner.Text())
 			if err != nil {
 				return g, err
 			}
-			fmt.Printf("Adding edge: [%d -> %d].\n", v, w)
-			if g.edges[v] == nil {
-				g.edges[v] = make([]int, 1)
+			if scanner.Scan() {
+				w, err := strconv.Atoi(scanner.Text())
+				if err != nil {
+					return g, err
+				}
+
+				if !g.AddEdge(v, w) {
+					return g, fmt.Errorf("Could not add edge [%d -> %d]. "+
+						"Most likely, indices are out of range\n", v, w)
+				}
+			} else {
+				return g, errors.New("The input data has wrong format")
 			}
-			if !g.AddEdge(v, w) {
-				fmt.Printf("Could not add edge [%d -> %d].\n", v, w)
-			}
-			g.indegree[w]++
-			g.E++
-		} else {
-			return g, errors.New("The input data has wrong format")
 		}
+		return g, scanner.Err()
 	}
 
-	return g, scanner.Err()
+	return nil, fmt.Errorf("Could not initialize directed graph from file [%v]."+
+		"Most likely, the format in the file is incorrect.", filename)
 }
