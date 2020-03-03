@@ -1,14 +1,23 @@
 package graphs
 
+import "fmt"
+
 type dfsOrder struct {
 	DirectedGraph
 	pre         []int
 	post        []int
-	postOrder   []int
 	preOrder    []int
+	postOrder   []int
 	marked      []bool
 	preCounter  int
 	postCounter int
+}
+
+func (g *dfsOrder) String() string {
+	return fmt.Sprintf("dfsOrder("+
+		"Graph: %v, pre: %v, post: %v, preOrder: %v, postOrder: %v, "+
+		"marked: %v, preCounter: %v, postCounter: %v)", g.DirectedGraph,
+		g.pre, g.post, g.preOrder, g.postOrder, g.marked, g.preCounter, g.postCounter)
 }
 
 // initDFSOrder inits the data structure that finds order in DirectedGraph
