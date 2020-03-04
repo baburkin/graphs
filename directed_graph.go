@@ -8,23 +8,19 @@ import (
 	"strconv"
 )
 
+// DirectedGraph interface provides API to work with directed graphs
+type DirectedGraph interface {
+	Graph                   // DirectedGraph is an extension of Graph API
+	OutDegree(v int) int    // All vertices in the digraph
+	InDegree(v int) int     // How many edges are incident to v
+	Reverse() DirectedGraph // Reverse direction of all edges
+}
+
 type digraph struct {
 	edges    map[int][]int
 	V        int
 	E        int
 	indegree []int
-}
-
-// DirectedGraph interface provides API to work with directed graphs
-type DirectedGraph interface {
-	VNum() int                 // Number of vertices
-	ENum() int                 // Number of edges
-	AddEdge(v int, w int) bool // Add edge v -> w
-	Edges(v int) []int         // All adjacent edges to the int v
-	AllEdges() map[int][]int   // All edges in the digraph
-	OutDegree(v int) int       // All vertices in the digraph
-	InDegree(v int) int        // How many edges are incident to v
-	Reverse() DirectedGraph    // Reverse direction of all edges
 }
 
 func (g *digraph) String() string {
