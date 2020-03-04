@@ -38,9 +38,4 @@ type DirectedEdge interface {
 	W() Vertex
 }
 
-// UndirectedGraph interface provides API to work with undirected graphs
-type UndirectedGraph interface {
-	AddEdge(v Vertex, w Vertex)
-	Edges() []Edge
-	Vertices() []Vertex
-}
+
