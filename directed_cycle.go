@@ -4,10 +4,10 @@ import "fmt"
 
 type directedCycle struct {
 	DirectedGraph
-	marked  []bool
-	onStack []bool
-	edgeTo  []int
-	cycle   []int
+	marked  []bool // flag used to mark visited vertices
+	onStack []bool // flag used to detect cycles
+	edgeTo  []int  // the source edge that has path to the given edge
+	cycle   []int  // stack that keeps a cycle (if exists) - pop the last element
 }
 
 func (dc *directedCycle) String() string {
@@ -56,4 +56,21 @@ func IsDAG(g DirectedGraph) bool {
 		}
 	}
 	return len(dc.cycle) == 0
+}
+
+// GetCycleInGraph returns the list of vertices that form a cycle in a directed graph
+func GetCycleInGraph(g DirectedGraph) []int {
+	dc := initDFSCycle(g)
+	for v := 0; v < dc.VNum(); v++ {
+		if !dc.marked[v] && len(dc.cycle) == 0 {
+			findCycleDFS(dc, v)
+		}
+	}
+	c := dc.cycle
+	// reverse the order as dc.cycle is a stack
+	for v := 0; v < len(c)/2; v++ {
+		c[v], c[len(c)-v-1] = c[len(c)-v-1], c[v]
+	}
+
+	return dc.cycle
 }
