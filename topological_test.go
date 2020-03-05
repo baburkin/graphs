@@ -25,8 +25,7 @@ func ExampleTopoSort() {
 	}
 }
 
-func TestTopoSort(t *testing.T) {
-	// Initialize the graph and sort it
+func initTestGraph() DirectedGraph {
 	g := InitDirectedGraph(8)
 	g.AddEdge(0, 1)
 	g.AddEdge(1, 2)
@@ -37,6 +36,11 @@ func TestTopoSort(t *testing.T) {
 	g.AddEdge(4, 5)
 	g.AddEdge(6, 4)
 	g.AddEdge(6, 7)
+	return g
+}
+
+func TestTopoSort(t *testing.T) {
+	g := initTestGraph()
 	gSorted, err := TopoSort(g)
 
 	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
@@ -65,4 +69,35 @@ func TestTopoSort(t *testing.T) {
 		}
 	}
 
+}
+
+func TestTopoSortReverse(t *testing.T) {
+	g := initTestGraph()
+	gSorted, err := TopoSortRevers(g)
+
+	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
+
+	// Assert that this graph can indeed be sorted topologically
+	assert.Equal(t, nil, err)
+
+	// Give the output of the initial and sorted graph
+	fmt.Printf("Initial graph: %v\n", g)
+	fmt.Printf("Topologically sorted graph: %v\n", gSorted)
+
+	// Validate the topological sort
+	sortedIndex := make([]int, len(gSorted), len(gSorted))
+	for i, v := range gSorted {
+		sortedIndex[v] = i
+	}
+	for v, edgesFromV := range g.AllEdges() {
+		for _, w := range edgesFromV {
+			fmt.Printf("Vertex [%v] should come before [%v]... ", w, v)
+			if sortedIndex[w] < sortedIndex[v] {
+				fmt.Println("OK")
+			} else {
+				fmt.Println("Eror")
+				t.Fatal("Topological sort is incorrect")
+			}
+		}
+	}
 }
