@@ -40,6 +40,8 @@ func TestTopoSort(t *testing.T) {
 	g.AddEdge(6, 7)
 	gSorted, err := graphs.TopoSort(g)
 
+	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
+
 	// Assert that this graph can indeed be sorted topologically
 	assert.Equal(t, nil, err)
 
@@ -55,8 +57,12 @@ func TestTopoSort(t *testing.T) {
 	for v, edgesFromV := range g.AllEdges() {
 		for _, w := range edgesFromV {
 			fmt.Printf("Vertex [%v] should come after [%v]... ", v, w)
-			assert.Less(t, sortedIndex[w], sortedIndex[v])
-			fmt.Println("OK")
+			if sortedIndex[w] < sortedIndex[v] {
+				fmt.Println("OK")
+			} else {
+				fmt.Println("Eror")
+				t.Fatal("Topological sort is incorrect")
+			}
 		}
 	}
 
