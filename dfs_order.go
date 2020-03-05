@@ -55,13 +55,13 @@ func findOrderDFS(g *dfsOrder, v int) {
 	g.postCounter++
 }
 
-// ReversePostOrder provides the reverse post-DFS order
-func ReversePostOrder(g DirectedGraph) []int {
+// DFSPostOrder provides the post-DFS order of vertices
+func DFSPostOrder(g DirectedGraph) []int {
 	return initDFSOrder(g).postOrder
 }
 
-// PostOrder provides the post-DFS order of vertices
-func PostOrder(g DirectedGraph) []int {
+// DFSReversePostOrder provides the reverse post-DFS order
+func DFSReversePostOrder(g DirectedGraph) []int {
 	gNew := initDFSOrder(g)
 	n := len(gNew.postOrder)
 	revPost := make([]int, n)
