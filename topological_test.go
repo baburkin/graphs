@@ -73,7 +73,7 @@ func TestTopoSort(t *testing.T) {
 
 func TestTopoSortReverse(t *testing.T) {
 	g := initTestGraph()
-	gSorted, err := TopoSortRevers(g)
+	gSorted, err := TopoSortReverse(g)
 
 	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
 
