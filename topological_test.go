@@ -55,8 +55,8 @@ func TestTopoSort(t *testing.T) {
 	}
 	for v, edgesFromV := range g.AllEdges() {
 		for _, w := range edgesFromV {
-			fmt.Printf("Vertex [%v] should come after [%v]... ", v, w)
-			if sortedIndex[w] < sortedIndex[v] {
+			fmt.Printf("Vertex [%v] should come before [%v]... ", v, w)
+			if sortedIndex[v] < sortedIndex[w] {
 				fmt.Println("OK")
 			} else {
 				fmt.Println("Eror")
