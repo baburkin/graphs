@@ -14,7 +14,7 @@ func Rank(g DirectedGraph, v Vertex) int {
 // TopoSort sorts the directed graph in topological order and returns the ordered slice of vertices
 func TopoSort(g DirectedGraph) ([]int, error) {
 	if IsDAG(g) {
-		return ReversePostOrder(g), nil
+		return DFSReversePostOrder(g), nil
 	}
 	return nil, fmt.Errorf("The graph [%v] has a cycle", g)
 }
