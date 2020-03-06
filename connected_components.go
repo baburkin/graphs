@@ -16,7 +16,7 @@ func ConnectedComponents(g Graph) ([]int, []int) {
 	cc := new(ccGraph)
 	cc.graph = g
 	cc.ccIndex = make([]int, 0, g.VNum())
-	cc.ccSize = make([]int, 0, g.VNum()/2)
+	cc.ccSize = make([]int, 0, g.VNum())
 	cc.marked = make([]bool, 0, g.VNum())
 	cc.count = 0
 	for v := 0; v < g.VNum(); v++ {
