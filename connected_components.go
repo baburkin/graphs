@@ -15,9 +15,9 @@ type ccGraph struct {
 func ConnectedComponents(g Graph) ([]int, []int) {
 	cc := new(ccGraph)
 	cc.graph = g
-	cc.ccIndex = make([]int, 0, g.VNum())
-	cc.ccSize = make([]int, 0, g.VNum())
-	cc.marked = make([]bool, 0, g.VNum())
+	cc.ccIndex = make([]int, g.VNum(), g.VNum())
+	cc.ccSize = make([]int, g.VNum(), g.VNum())
+	cc.marked = make([]bool, g.VNum(), g.VNum())
 	cc.count = 0
 	for v := 0; v < g.VNum(); v++ {
 		if !cc.marked[v] {
