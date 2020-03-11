@@ -14,7 +14,12 @@ type ccGraph struct {
 // of component with id 'i'.
 func ConnectedComponents(g Graph) ([]int, []int) {
 	cc := new(ccGraph)
-	cc.graph = g
+	switch g.(type) {
+	case *digraph:
+		cc.graph = InitGraphFromGraph(g)
+	default:
+		cc.graph = g
+	}
 	cc.ccIndex = make([]int, g.VNum(), g.VNum())
 	cc.ccSize = make([]int, g.VNum(), g.VNum())
 	cc.marked = make([]bool, g.VNum(), g.VNum())
