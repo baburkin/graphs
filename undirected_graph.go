@@ -75,3 +75,16 @@ func InitGraph(verticesNum int) Graph {
 	g.edges = make(map[int][]int, verticesNum)
 	return g
 }
+
+// InitGraphFromGraph initializes a new instance of unidirected graph
+// from a given instance of graph by copying all edges
+func InitGraphFromGraph(g Graph) Graph {
+	newG := new(graph)
+	newG.V = g.VNum()
+	for v := 0; v < newG.V; v++ {
+		for _, w := range g.Edges(v) {
+			newG.AddEdge(v, w)
+		}
+	}
+	return newG
+}
