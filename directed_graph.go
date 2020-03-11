@@ -17,9 +17,7 @@ type DirectedGraph interface {
 }
 
 type digraph struct {
-	edges    map[int][]int
-	V        int
-	E        int
+	graph    //
 	indegree []int
 }
 
@@ -30,18 +28,7 @@ func (g *digraph) String() string {
 		"in degree %v)", g.V, g.edges, g.indegree)
 }
 
-func (g *digraph) isVertexValid(v int) bool {
-	return v >= 0 && v < g.V
-}
-
-func (g *digraph) VNum() int {
-	return g.V
-}
-
-func (g *digraph) ENum() int {
-	return g.E
-}
-
+// AddEdge for digraph is not symmetrical as for an undirected graph (graph)
 func (g *digraph) AddEdge(v int, w int) bool {
 	if g.isVertexValid(v) && g.isVertexValid(w) {
 		g.edges[v] = append(g.edges[v], w)
@@ -50,14 +37,6 @@ func (g *digraph) AddEdge(v int, w int) bool {
 		return true
 	}
 	return false
-}
-
-func (g *digraph) Edges(v int) []int {
-	return g.edges[v]
-}
-
-func (g *digraph) AllEdges() map[int][]int {
-	return g.edges
 }
 
 func (g *digraph) OutDegree(v int) int {
