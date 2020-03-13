@@ -81,6 +81,7 @@ func InitGraph(verticesNum int) Graph {
 func InitGraphFromGraph(g Graph) Graph {
 	newG := new(graph)
 	newG.V = g.VNum()
+	newG.edges = make(map[int][]int, newG.V)
 	for v := 0; v < newG.V; v++ {
 		for _, w := range g.Edges(v) {
 			newG.AddEdge(v, w)
