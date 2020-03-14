@@ -20,10 +20,37 @@ func initTestOneComponentDAG() DirectedGraph {
 	return g
 }
 
-func TestConnectedComponentsInDAG(t *testing.T) {
+func initTestTwoComponentDAG() DirectedGraph {
+	g := InitDirectedGraph(6)
+	g.AddEdge(0, 1)
+	g.AddEdge(1, 2)
+	g.AddEdge(2, 0) // introducing a component with a cycle
+	g.AddEdge(3, 4)
+	g.AddEdge(5, 4)
+	return g
+}
+
+func TestConnectedComponentsInDAG1(t *testing.T) {
 	g := initTestOneComponentDAG()
 
 	cc, size := ConnectedComponents(g)
 	assert.Equal(t, 8, size[0])
 	assert.Equal(t, 0, cc[3])
+}
+
+func TestConnectedComponentsInDAG2(t *testing.T) {
+	g := initTestTwoComponentDAG()
+
+	cc, size := ConnectedComponents(g)
+	assert.Equal(t, 3, size[0])
+	assert.Equal(t, 3, size[1])
+	// only two components should be found
+	assert.Equal(t, 0, size[2])
+
+	assert.Equal(t, 0, cc[0])
+	assert.Equal(t, 0, cc[1])
+	assert.Equal(t, 0, cc[2])
+	assert.Equal(t, 1, cc[3])
+	assert.Equal(t, 1, cc[4])
+	assert.Equal(t, 1, cc[5])
 }
