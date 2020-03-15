@@ -54,3 +54,19 @@ func TestConnectedComponentsInDAG2(t *testing.T) {
 	assert.Equal(t, 1, cc[4])
 	assert.Equal(t, 1, cc[5])
 }
+
+// TestConnectedComponentsInDAG3 - tests that after adding an edge
+// connecting two vertices in two separate components make the graph
+// a single-component one
+func TestConnectedComponentsInDAG3(t *testing.T) {
+	g := initTestTwoComponentDAG()
+
+	_, size := ConnectedComponents(g)
+	assert.Equal(t, 3, size[0])
+
+	g.AddEdge(2, 4)
+
+	_, size = ConnectedComponents(g)
+	assert.Equal(t, 6, size[0])
+	assert.Equal(t, 0, size[1])
+}
