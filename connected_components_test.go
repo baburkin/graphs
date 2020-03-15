@@ -33,26 +33,26 @@ func initTestTwoComponentDAG() DirectedGraph {
 func TestConnectedComponentsInDAG1(t *testing.T) {
 	g := initTestOneComponentDAG()
 
-	cc, size := ConnectedComponents(g)
-	assert.Equal(t, 8, size[0])
-	assert.Equal(t, 0, cc[3])
+	cc := InitConnectedComponents(g)
+	assert.Equal(t, 8, cc.CompSize(0))
+	assert.Equal(t, 0, cc.Index(3))
 }
 
 func TestConnectedComponentsInDAG2(t *testing.T) {
 	g := initTestTwoComponentDAG()
 
-	cc, size := ConnectedComponents(g)
-	assert.Equal(t, 3, size[0])
-	assert.Equal(t, 3, size[1])
+	cc := InitConnectedComponents(g)
+	assert.Equal(t, 3, cc.CompSize(0))
+	assert.Equal(t, 3, cc.CompSize(1))
 	// only two components should be found
-	assert.Equal(t, 0, size[2])
+	assert.Equal(t, 0, cc.CompSize(2))
 
-	assert.Equal(t, 0, cc[0])
-	assert.Equal(t, 0, cc[1])
-	assert.Equal(t, 0, cc[2])
-	assert.Equal(t, 1, cc[3])
-	assert.Equal(t, 1, cc[4])
-	assert.Equal(t, 1, cc[5])
+	assert.Equal(t, 0, cc.Index(0))
+	assert.Equal(t, 0, cc.Index(1))
+	assert.Equal(t, 0, cc.Index(2))
+	assert.Equal(t, 1, cc.Index(3))
+	assert.Equal(t, 1, cc.Index(4))
+	assert.Equal(t, 1, cc.Index(5))
 }
 
 // TestConnectedComponentsInDAG3 - tests that after adding an edge
@@ -61,12 +61,12 @@ func TestConnectedComponentsInDAG2(t *testing.T) {
 func TestConnectedComponentsInDAG3(t *testing.T) {
 	g := initTestTwoComponentDAG()
 
-	_, size := ConnectedComponents(g)
-	assert.Equal(t, 3, size[0])
+	cc := InitConnectedComponents(g)
+	assert.Equal(t, 3, cc.CompSize(0))
 
 	g.AddEdge(2, 4)
 
-	_, size = ConnectedComponents(g)
-	assert.Equal(t, 6, size[0])
-	assert.Equal(t, 0, size[1])
+	cc = InitConnectedComponents(g)
+	assert.Equal(t, 6, cc.CompSize(0))
+	assert.Equal(t, 0, cc.CompSize(1))
 }
