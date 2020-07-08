@@ -2,7 +2,6 @@ package graphs
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -60,12 +59,6 @@ func (g *digraph) Reverse() DirectedGraph {
 	return gNew
 }
 
-func checkIOError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 // InitDirectedGraph initializes a new instance of DirectedGraph
 // with a given number of vertices
 func InitDirectedGraph(verticesNum int) DirectedGraph {
@@ -112,12 +105,12 @@ func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
 						"Most likely, indices are out of range\n", v, w)
 				}
 			} else {
-				return g, errors.New("The input data has wrong format")
+				return g, fmt.Errorf("the input data from [%v] has wrong format", filename)
 			}
 		}
 		return g, scanner.Err()
 	}
 
-	return nil, fmt.Errorf("Could not initialize directed graph from file [%v]."+
-		"Most likely, the format in the file is incorrect.", filename)
+	return nil, fmt.Errorf("could not initialize directed graph from file [%v]; "+
+		"most likely, the format in the file is incorrect", filename)
 }
