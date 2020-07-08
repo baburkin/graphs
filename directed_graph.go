@@ -17,8 +17,8 @@ type DirectedGraph interface {
 }
 
 type digraph struct {
-	graph    //
-	indegree []int
+	graph
+	indegree []int // number of incident vertices for each vertex
 }
 
 func (g *digraph) String() string {
@@ -39,6 +39,7 @@ func (g *digraph) AddEdge(v int, w int) bool {
 	return false
 }
 
+// OutDegree
 func (g *digraph) OutDegree(v int) int {
 	return len(g.edges[v])
 }
