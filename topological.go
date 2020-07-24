@@ -16,7 +16,7 @@ func TopoSort(g DirectedGraph) ([]int, error) {
 	if IsDAG(g) {
 		return DFSReversePostOrder(g), nil
 	}
-	return nil, fmt.Errorf("The graph [%v] has a cycle hence topological sort is not possible", g)
+	return nil, fmt.Errorf("the graph [%v] has a cycle hence topological sort is not possible", g)
 }
 
 // TopoSortReverse returns the slice of vertices ordered reversely to topological order.
@@ -28,5 +28,5 @@ func TopoSortReverse(g DirectedGraph) ([]int, error) {
 	if IsDAG(g) {
 		return DFSPostOrder(g), nil
 	}
-	return nil, fmt.Errorf("The graph [%v] has a cycle hence task dependency ordering is not possible", g)
+	return nil, fmt.Errorf("the graph [%v] has a cycle hence task dependency ordering is not possible", g)
 }
