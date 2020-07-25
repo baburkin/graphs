@@ -37,5 +37,3 @@ type DirectedEdge interface {
 	V() Vertex
 	W() Vertex
 }
-
-
