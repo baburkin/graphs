@@ -14,7 +14,7 @@ type Graph interface {
 }
 
 type graph struct {
-	edges map[int][]int
+	edges map[int][]int // I wonder if map[int]map[int]bool would be a better choice?
 	V     int
 	E     int
 }
@@ -56,13 +56,15 @@ func (g *graph) HasEdge(v int, w int) bool {
 }
 
 func (g *graph) AddEdge(v int, w int) bool {
-	if g.hasVertex(v) && g.hasVertex(w) && !g.HasEdge(v, w) {
+	if !g.hasVertex(v) || !g.hasVertex(w) {
+		return false
+	}
+	if !g.HasEdge(v, w) {
 		g.edges[v] = append(g.edges[v], w)
 		g.edges[w] = append(g.edges[w], v)
 		g.E++
-		return true
 	}
-	return false
+	return true
 }
 
 // InitGraph initializes a new instance of Graph
