@@ -38,3 +38,14 @@ func TestInitDirectedGraphFromFile(t *testing.T) {
 	assert.Equal(t, graph.VNum(), 7)
 	assert.Equal(t, graph.ENum(), 7)
 }
+
+func TestInitDirectedGraphFromFile2(t *testing.T) {
+	graph, err := InitDirectedGraphFromFile("examples/directed_err.txt")
+
+	if assert.Error(t, err) {
+		assert.EqualError(t, err, fmt.Sprintf(errInvalidVertex+
+			": strconv.Atoi: parsing \"5k\": invalid syntax", "5k"))
+	}
+
+	assert.Equal(t, 2, graph.ENum())
+}

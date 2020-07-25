@@ -3,6 +3,7 @@ package graphs
 import (
 	"bufio"
 	"fmt"
+	"github.com/pkg/errors"
 	"os"
 	"strconv"
 )
@@ -19,6 +20,10 @@ type digraph struct {
 	graph
 	indegree []int // number of incident vertices for each vertex
 }
+
+var (
+	errInvalidVertex = "graphs.InitDirectedGraphFromFile: invalid vertex [%v] (should be int)"
+)
 
 func (g *digraph) String() string {
 	return fmt.Sprintf("DirectedGraph("+
@@ -92,20 +97,20 @@ func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
 		for scanner.Scan() {
 			v, err := strconv.Atoi(scanner.Text())
 			if err != nil {
-				return g, err
+				return g, errors.Wrapf(err, errInvalidVertex, scanner.Text())
 			}
-			if scanner.Scan() {
-				w, err := strconv.Atoi(scanner.Text())
-				if err != nil {
-					return g, err
-				}
+			if !scanner.Scan() {
+				return g, fmt.Errorf("graphs.InitDirectedGraphFromFile: "+
+					"the input data from [%v] has wrong format", filename)
+			}
+			w, err := strconv.Atoi(scanner.Text())
+			if err != nil {
+				return g, errors.Wrapf(err, errInvalidVertex, scanner.Text())
+			}
 
-				if !g.AddEdge(v, w) {
-					return g, fmt.Errorf("Could not add edge [%d -> %d]. "+
-						"Most likely, indices are out of range\n", v, w)
-				}
-			} else {
-				return g, fmt.Errorf("the input data from [%v] has wrong format", filename)
+			if !g.AddEdge(v, w) {
+				return g, fmt.Errorf("Could not add edge [%d -> %d]. "+
+					"Most likely, indices are out of range\n", v, w)
 			}
 		}
 		return g, scanner.Err()
