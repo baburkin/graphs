@@ -9,7 +9,7 @@ type Graph interface {
 	ENum() int                 // Number of edges
 	AddEdge(v int, w int) bool // Add edge v -- w
 	HasEdge(v int, w int) bool // Does the graph contain edge v -- w?
-	Edges(v int) []int         // All adjacent edges to v
+	Edges(v int) []int         // Edges adjacent to v
 	AllEdges() map[int][]int   // All edges in the graph
 }
 
