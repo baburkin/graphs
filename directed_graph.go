@@ -29,7 +29,7 @@ func (g *digraph) String() string {
 
 // AddEdge for digraph is not symmetrical as for an undirected graph (graph)
 func (g *digraph) AddEdge(v int, w int) bool {
-	if g.isVertexValid(v) && g.isVertexValid(w) {
+	if g.hasVertex(v) && g.hasVertex(w) {
 		g.edges[v] = append(g.edges[v], w)
 		g.indegree[w]++
 		g.E++

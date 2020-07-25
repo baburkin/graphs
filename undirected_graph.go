@@ -25,7 +25,7 @@ func (g *graph) String() string {
 		"edges: %v)", g.V, g.edges)
 }
 
-func (g *graph) isVertexValid(v int) bool {
+func (g *graph) hasVertex(v int) bool {
 	return v >= 0 && v < g.V
 }
 
@@ -56,7 +56,7 @@ func (g *graph) HasEdge(v int, w int) bool {
 }
 
 func (g *graph) AddEdge(v int, w int) bool {
-	if g.isVertexValid(v) && g.isVertexValid(w) && !g.HasEdge(v, w) {
+	if g.hasVertex(v) && g.hasVertex(w) && !g.HasEdge(v, w) {
 		g.edges[v] = append(g.edges[v], w)
 		g.edges[w] = append(g.edges[w], v)
 		g.E++
