@@ -9,6 +9,7 @@ type ccGraph struct {
 }
 
 // ConnectedComponents interface provides the API for getting
+// the number of connected components in a graph
 type ConnectedComponents interface {
 	Graph() Graph
 	Index(v int) int
