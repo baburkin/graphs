@@ -10,7 +10,7 @@ import (
 // DirectedGraph interface provides API to work with directed graphs
 type DirectedGraph interface {
 	Graph                   // DirectedGraph is an extension of Graph API
-	OutDegree(v int) int    // All vertices in the digraph
+	OutDegree(v int) int    // How many edges are originating from the v
 	InDegree(v int) int     // How many edges are incident to v
 	Reverse() DirectedGraph // Reverse direction of all edges
 }
