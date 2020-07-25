@@ -47,13 +47,12 @@ func (g *graph) AllEdges() map[int][]int {
 
 // TODO: need to rewrite HasEdge & AddEdge using sets, not slices
 func (g *graph) HasEdge(v int, w int) bool {
-	result := false
 	for _, e := range g.edges[v] {
 		if e == w {
 			return true
 		}
 	}
-	return result
+	return false
 }
 
 func (g *graph) AddEdge(v int, w int) bool {
