@@ -10,7 +10,7 @@ import (
 
 func ExampleTopoSort() {
 	// Initialize a directed graph from a file
-	graph, err := InitDirectedGraphFromFile("examples/directed_7.txt")
+	graph, err := LoadDirectedGraph("examples/directed_7.txt")
 	if err != nil {
 		fmt.Printf("Got an error: %v\n", err)
 		os.Exit(2)

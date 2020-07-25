@@ -22,7 +22,7 @@ type digraph struct {
 }
 
 var (
-	errInvalidVertex = "graphs.InitDirectedGraphFromFile: invalid vertex [%v] (should be int)"
+	errInvalidVertex = "graphs.LoadDirectedGraph: invalid vertex [%v] (should be int)"
 )
 
 func (g *digraph) String() string {
@@ -75,9 +75,9 @@ func InitDirectedGraph(verticesNum int) DirectedGraph {
 	return g
 }
 
-// InitDirectedGraphFromFile initializes a new instance of DirectedGraph
+// LoadDirectedGraph initializes a new instance of DirectedGraph
 // from a file.
-func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
+func LoadDirectedGraph(filename string) (DirectedGraph, error) {
 	r, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func InitDirectedGraphFromFile(filename string) (DirectedGraph, error) {
 				return g, errors.Wrapf(err, errInvalidVertex, scanner.Text())
 			}
 			if !scanner.Scan() {
-				return g, fmt.Errorf("graphs.InitDirectedGraphFromFile: "+
+				return g, fmt.Errorf("graphs.LoadDirectedGraph: "+
 					"the input data from [%v] has wrong format", filename)
 			}
 			w, err := strconv.Atoi(scanner.Text())

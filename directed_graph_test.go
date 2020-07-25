@@ -32,7 +32,7 @@ func TestAddEdges(t *testing.T) {
 }
 
 func TestInitDirectedGraphFromFile(t *testing.T) {
-	graph, err := InitDirectedGraphFromFile("examples/directed_7.txt")
+	graph, err := LoadDirectedGraph("examples/directed_7.txt")
 
 	assert.Nil(t, err)
 	assert.Equal(t, graph.VNum(), 7)
@@ -40,7 +40,7 @@ func TestInitDirectedGraphFromFile(t *testing.T) {
 }
 
 func TestInitDirectedGraphFromFile2(t *testing.T) {
-	graph, err := InitDirectedGraphFromFile("examples/directed_err.txt")
+	graph, err := LoadDirectedGraph("examples/directed_err.txt")
 
 	if assert.Error(t, err) {
 		assert.EqualError(t, err, fmt.Sprintf(errInvalidVertex+
