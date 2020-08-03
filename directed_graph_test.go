@@ -17,8 +17,9 @@ func TestInitDirectedGraphByVNum(t *testing.T) {
 func TestStringReprOfDirectedGraph(t *testing.T) {
 	graph := InitDirectedGraph(3)
 	graph.AddEdge(1, 2)
-	assert.Equal(t, fmt.Sprintf("%v", graph),
-		"DirectedGraph(vertices: [3]; edges: map[1:[2]]; in degree [0 0 1])")
+	assert.Equal(t,
+		"DirectedGraph(vertices: [3]; edges: [[] [2] []]; in degree [0 0 1])",
+		fmt.Sprintf("%v", graph))
 }
 
 func TestAddEdges(t *testing.T) {

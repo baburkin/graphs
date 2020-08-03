@@ -70,7 +70,7 @@ func InitDirectedGraph(verticesNum int) DirectedGraph {
 	g := new(digraph)
 	g.V = verticesNum
 	g.E = 0
-	g.edges = make(map[int][]int, verticesNum)
+	g.edges = make([][]int, verticesNum, verticesNum)
 	g.indegree = make([]int, verticesNum, verticesNum)
 	return g
 }
