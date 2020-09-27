@@ -4,17 +4,20 @@ import (
 	"math"
 )
 
-// ShortestPathBFS returns the slice of vertices that form
+func prependInt(x []int, y int) []int {
+	x = append(x, 0)
+	copy(x[1:], x)
+	x[0] = y
+	return x
+}
+
+// ShortestPathBFS returns the number of step that form
 // the shortest path between `vSource` and `vTarget` vertices:
 //
-// vSource -> v1 -> v2 -> ... -> vTarget
-//
-// The slice returns includes vSource but does not include
-// vTarget, thus length of the slice equals to the number of hops.
+// vSource -> v1 -> v2 -> ... -> vTarget (number of arrows/hops)
 //
 // If vSource == vTarget then zero-length slice is returned
-func ShortestPathBFS(g Graph, vSource int, vTarget int) []int {
-	var path []int
+func ShortestPathBFS(g Graph, vSource int, vTarget int) int {
 	var queue []int
 	var marked []bool
 	var distTo []int
@@ -42,17 +45,19 @@ func ShortestPathBFS(g Graph, vSource int, vTarget int) []int {
 		v := queue[0]
 		queue = queue[1:]
 		for _, w := range g.Edges(v) {
-			edgeTo[w] = v
-			distTo[w] = distTo[v] + 1
-			marked[w] = true
-			queue = append(queue, w)
+			if !marked[w] {
+				edgeTo[w] = v
+				distTo[w] = distTo[v] + 1
+				marked[w] = true
+				queue = append(queue, w)
+			}
 		}
 	}
 
-	// Path includes succession of vertices: [vSouce, v1, ..., vTarget]
-	for v := edgeTo[vTarget]; distTo[v] != 0; v = edgeTo[v] {
-		path = append([]int{v}, path...)
-	}
+	// Path means succession of vertices (hops) between vSouce and vTarget
+	// for v := edgeTo[vTarget]; distTo[v] != 0; v = edgeTo[v] {
+	//	path = prependInt(path, v)
+	//}
 
-	return path
+	return distTo[vTarget]
 }
