@@ -49,8 +49,8 @@ func TestTopoSort(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	// Give the output of the initial and sorted graph
-	fmt.Printf("Initial graph: %v\n", g)
-	fmt.Printf("Topologically sorted graph: %v\n", gSorted)
+	t.Logf("Initial graph: %v\n", g)
+	t.Logf("Topologically sorted graph: %v\n", gSorted)
 
 	// Validate the topological sort
 	sortedIndex := make([]int, len(gSorted), len(gSorted))
@@ -59,11 +59,11 @@ func TestTopoSort(t *testing.T) {
 	}
 	for v, edgesFromV := range g.AllEdges() {
 		for _, w := range edgesFromV {
-			fmt.Printf("Vertex [%v] should come before [%v]... ", v, w)
+			t.Logf("Vertex [%v] should come before [%v]... ", v, w)
 			if sortedIndex[v] < sortedIndex[w] {
-				fmt.Println("OK")
+				t.Logf("OK")
 			} else {
-				fmt.Println("Eror")
+				t.Logf("Eror")
 				t.Fatal("Topological sort is incorrect")
 			}
 		}
@@ -81,8 +81,8 @@ func TestTopoSortReverse(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	// Give the output of the initial and sorted graph
-	fmt.Printf("Initial graph: %v\n", g)
-	fmt.Printf("Topologically sorted graph: %v\n", gSorted)
+	t.Logf("Initial graph: %v\n", g)
+	t.Logf("Topologically sorted graph: %v\n", gSorted)
 
 	// Validate the topological sort
 	sortedIndex := make([]int, len(gSorted), len(gSorted))
@@ -91,11 +91,11 @@ func TestTopoSortReverse(t *testing.T) {
 	}
 	for v, edgesFromV := range g.AllEdges() {
 		for _, w := range edgesFromV {
-			fmt.Printf("Vertex [%v] should come before [%v]... ", w, v)
+			t.Logf("Vertex [%v] should come before [%v]... ", w, v)
 			if sortedIndex[w] < sortedIndex[v] {
-				fmt.Println("OK")
+				t.Logf("OK")
 			} else {
-				fmt.Println("Eror")
+				t.Logf("Eror")
 				t.Fatal("Topological sort is incorrect")
 			}
 		}
