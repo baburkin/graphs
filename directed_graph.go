@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/pkg/errors"
+	"io"
 	"os"
 	"strconv"
 )
@@ -82,9 +83,14 @@ func LoadDirectedGraph(filename string) (DirectedGraph, error) {
 	if err != nil {
 		return nil, err
 	}
-	scanner := bufio.NewScanner(r)
-	scanner.Split(bufio.ScanWords)
+	return LoadDirectedGraphFromReader(r)
+}
 
+// LoadDirectedGraphFromReader initializes a new instance of DirectedGraph
+// from any implementor of io.Reader interface.
+func LoadDirectedGraphFromReader(reader io.Reader) (DirectedGraph, error) {
+	scanner := bufio.NewScanner(reader)
+	scanner.Split(bufio.ScanWords)
 	// First number should indicate the order of the graph (number of vertices)
 	if scanner.Scan() {
 		size, err := strconv.Atoi(scanner.Text())
@@ -100,8 +106,8 @@ func LoadDirectedGraph(filename string) (DirectedGraph, error) {
 				return g, errors.Wrapf(err, errInvalidVertex, scanner.Text())
 			}
 			if !scanner.Scan() {
-				return g, fmt.Errorf("graphs.LoadDirectedGraph: "+
-					"the input data from [%v] has wrong format", filename)
+				return g, fmt.Errorf("graphs.LoadDirectedGraph: " +
+					"the input data from has wrong format")
 			}
 			w, err := strconv.Atoi(scanner.Text())
 			if err != nil {
@@ -116,6 +122,6 @@ func LoadDirectedGraph(filename string) (DirectedGraph, error) {
 		return g, scanner.Err()
 	}
 
-	return nil, fmt.Errorf("could not initialize directed graph from file [%v]; "+
-		"most likely, the format in the file is incorrect", filename)
+	return nil, fmt.Errorf("could not initialize directed graph from object [%v]; "+
+		"most likely, the input format is incorrect", reader)
 }
