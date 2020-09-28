@@ -6,6 +6,8 @@ package graphs
 
 import "fmt"
 
+type graphFactoryFunc func() DirectedGraph
+
 // VertexIterator type is a generic iterable collection
 type VertexIterator interface {
 	HasNext() bool
