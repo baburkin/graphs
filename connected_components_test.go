@@ -6,32 +6,64 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func initTestOneComponentDAG() DirectedGraph {
-	g := InitDirectedGraph(8)
-	g.AddEdge(0, 1)
-	g.AddEdge(1, 2)
-	g.AddEdge(1, 5)
-	g.AddEdge(1, 7)
-	g.AddEdge(3, 1)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 5)
-	g.AddEdge(6, 4)
-	g.AddEdge(6, 7)
-	return g
+type initGraphFunc func() DirectedGraph
+
+var (
+	initDAG1 = func() DirectedGraph {
+		g := InitDirectedGraph(8)
+		g.AddEdge(0, 1)
+		g.AddEdge(1, 2)
+		g.AddEdge(1, 5)
+		g.AddEdge(1, 7)
+		g.AddEdge(3, 1)
+		g.AddEdge(3, 4)
+		g.AddEdge(4, 5)
+		g.AddEdge(6, 4)
+		g.AddEdge(6, 7)
+		return g
+	}
+	initDAG2 = func() DirectedGraph {
+		g := InitDirectedGraph(6)
+		g.AddEdge(0, 1)
+		g.AddEdge(1, 2)
+		g.AddEdge(2, 0) // introducing a component with a cycle
+		g.AddEdge(3, 4)
+		g.AddEdge(5, 4)
+		return g
+	}
+	initDAG3 = func() DirectedGraph {
+		g := initDAG2()
+		g.AddEdge(2, 4) // now the graph has only one component
+		return g
+	}
+	testDataCCSize = []struct {
+		name          string
+		initGraphFunc initGraphFunc
+		expectedCount int
+	}{
+		{"testDAG1", initDAG1, 1},
+		{"testDAG2", initDAG2, 2},
+		{"testDAG3", initDAG3, 1},
+	}
+)
+
+func TestConnCompCount(t *testing.T) {
+	for _, test := range testDataCCSize {
+		t.Run(test.name, func(t *testing.T) {
+			g := test.initGraphFunc()
+			cc := InitConnectedComponents(g)
+			t.Logf("Checking connected components for graph: %v", g)
+			count := cc.Count()
+			t.Logf("Expected count: [%v], actual count: [%v]", test.expectedCount, count)
+			if test.expectedCount != count {
+				t.Fail()
+			}
+		})
+	}
 }
 
-func initTestTwoComponentDAG() DirectedGraph {
-	g := InitDirectedGraph(6)
-	g.AddEdge(0, 1)
-	g.AddEdge(1, 2)
-	g.AddEdge(2, 0) // introducing a component with a cycle
-	g.AddEdge(3, 4)
-	g.AddEdge(5, 4)
-	return g
-}
-
-func TestConnectedComponentsInDAG1(t *testing.T) {
-	g := initTestOneComponentDAG()
+func TestConnComp1(t *testing.T) {
+	g := initDAG1()
 
 	cc := InitConnectedComponents(g)
 	assert.Equal(t, 8, cc.CompSize(0))
@@ -39,7 +71,7 @@ func TestConnectedComponentsInDAG1(t *testing.T) {
 }
 
 func TestConnectedComponentsInDAG2(t *testing.T) {
-	g := initTestTwoComponentDAG()
+	g := initDAG2()
 
 	cc := InitConnectedComponents(g)
 	assert.Equal(t, 3, cc.CompSize(0))
@@ -59,7 +91,7 @@ func TestConnectedComponentsInDAG2(t *testing.T) {
 // connecting two vertices in two separate components make the graph
 // a single-component one
 func TestConnectedComponentsInDAG3(t *testing.T) {
-	g := initTestTwoComponentDAG()
+	g := initDAG2()
 
 	cc := InitConnectedComponents(g)
 	assert.Equal(t, 3, cc.CompSize(0))
