@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func ExampleTopoSort() {
@@ -39,46 +37,57 @@ func initTestGraph() DirectedGraph {
 	return g
 }
 
+var (
+	testDataTopoSort = []struct {
+		name     string
+		initFunc digraphFactoryFunc
+	}{
+		{"testDAG1", initDAG1},
+	}
+)
+
 func TestTopoSort(t *testing.T) {
-	g := initTestGraph()
-	gSorted, err := TopoSort(g)
+	for _, test := range testDataTopoSort {
+		t.Run(test.name, func(t *testing.T) {
+			g := test.initFunc()
+			gSorted, err := TopoSort(g)
 
-	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
-
-	// Assert that this graph can indeed be sorted topologically
-	assert.Equal(t, nil, err)
-
-	// Give the output of the initial and sorted graph
-	t.Logf("Initial graph: %v\n", g)
-	t.Logf("Topologically sorted graph: %v\n", gSorted)
-
-	// Validate the topological sort
-	sortedIndex := make([]int, len(gSorted), len(gSorted))
-	for i, v := range gSorted {
-		sortedIndex[v] = i
-	}
-	for v, edgesFromV := range g.AllEdges() {
-		for _, w := range edgesFromV {
-			t.Logf("Vertex [%v] should come before [%v]... ", v, w)
-			if sortedIndex[v] < sortedIndex[w] {
-				t.Logf("OK")
-			} else {
-				t.Logf("Eror")
-				t.Fatal("Topological sort is incorrect")
+			if err != nil {
+				t.Fatalf("Could not topologically sort the graph %v, error: %v", g, err)
 			}
-		}
-	}
 
+			// Give the output of the initial and sorted graph
+			t.Logf("Initial graph: %v\n", g)
+			t.Logf("Topologically sorted graph: %v\n", gSorted)
+
+			// Validate the topological sort
+			sortedIndex := make([]int, len(gSorted), len(gSorted))
+			for i, v := range gSorted {
+				sortedIndex[v] = i
+			}
+			for v, edgesFromV := range g.AllEdges() {
+				for _, w := range edgesFromV {
+					t.Logf("Vertex [%v] should come before [%v]... ", v, w)
+					if sortedIndex[v] >= sortedIndex[w] {
+						t.Logf("Error: topological sort is incorrect")
+						t.Fail()
+						t.Fatal("")
+					}
+				}
+			}
+		})
+	}
 }
 
 func TestTopoSortReverse(t *testing.T) {
-	g := initTestGraph()
+	g := initDAG1()
 	gSorted, err := TopoSortReverse(g)
 
 	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
 
-	// Assert that this graph can indeed be sorted topologically
-	assert.Equal(t, nil, err)
+	if err != nil {
+		t.Fatalf("Could not topologically sort the graph %v, error: %v", g, err)
+	}
 
 	// Give the output of the initial and sorted graph
 	t.Logf("Initial graph: %v\n", g)
