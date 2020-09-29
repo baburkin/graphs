@@ -34,7 +34,7 @@ var (
 	}
 	testDataCCCount = []struct {
 		name            string
-		initGraphFunc   graphFactoryFunc
+		initGraphFunc   digraphFactoryFunc
 		expectedCCCount int
 	}{
 		{"testDAG1", initDAG1, 1},
@@ -43,7 +43,7 @@ var (
 	}
 	testDataCCIndex = []struct {
 		name            string
-		initGraphFunc   graphFactoryFunc
+		initGraphFunc   digraphFactoryFunc
 		vertex          int
 		expectedCCIndex int
 	}{
@@ -56,7 +56,7 @@ var (
 	}
 	testDataCCSize = []struct {
 		name           string
-		initGraphFunc  graphFactoryFunc
+		initGraphFunc  digraphFactoryFunc
 		component      int
 		expectedCCSize int
 	}{

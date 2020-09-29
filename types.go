@@ -6,7 +6,9 @@ package graphs
 
 import "fmt"
 
-type graphFactoryFunc func() DirectedGraph
+type digraphFactoryFunc func() DirectedGraph
+
+type graphFactoryFunc func() Graph
 
 // VertexIterator type is a generic iterable collection
 type VertexIterator interface {
