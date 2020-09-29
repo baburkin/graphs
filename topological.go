@@ -2,6 +2,7 @@ package graphs
 
 import "fmt"
 
+//goland:noinspection SpellCheckingInspection
 type topoOrder struct {
 	DirectedGraph
 }

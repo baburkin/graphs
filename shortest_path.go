@@ -35,7 +35,7 @@ func ShortestPathBFS(g Graph, vSource int, vTarget int) int {
 	// Init distTo with "Infinity"
 	for v := 0; v < g.VNum(); v++ {
 		if v != vSource {
-			distTo[v] = int(math.MaxInt64)
+			distTo[v] = math.MaxInt64
 		}
 	}
 
@@ -54,7 +54,7 @@ func ShortestPathBFS(g Graph, vSource int, vTarget int) int {
 		}
 	}
 
-	// Path means succession of vertices (hops) between vSouce and vTarget
+	// Path means succession of vertices (hops) between vSource and vTarget
 	// for v := edgeTo[vTarget]; distTo[v] != 0; v = edgeTo[v] {
 	//	path = prependInt(path, v)
 	//}

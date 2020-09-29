@@ -17,6 +17,7 @@ type DirectedGraph interface {
 	Reverse() DirectedGraph // Reverse direction of all edges
 }
 
+//goland:noinspection SpellCheckingInspection
 type digraph struct {
 	graph
 	indegree []int // number of incident vertices for each vertex
