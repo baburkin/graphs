@@ -71,7 +71,6 @@ func TestTopoSort(t *testing.T) {
 					if sortedIndex[v] >= sortedIndex[w] {
 						t.Logf("Error: topological sort is incorrect")
 						t.Fail()
-						t.Fatal("")
 					}
 				}
 			}
