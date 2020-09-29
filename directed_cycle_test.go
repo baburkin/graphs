@@ -1,33 +1,24 @@
 package graphs
 
 import (
+	"reflect"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestIsDAG(t *testing.T) {
-	g := InitDirectedGraph(5)
-
-	// Make a cycle 2 -> 3 -> 4 -> 5
-	g.AddEdge(0, 1)
-	g.AddEdge(1, 2)
-	g.AddEdge(2, 3)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 2)
-
-	assert.Equal(t, false, IsDAG(g))
+	g := initDAG4Cycled()
+	t.Logf("Check if the directed graph is DAG: %v", g)
+	if IsDAG(g) {
+		t.Errorf("IsDAG() should have returned false")
+	}
 }
 
 func TestGetCycleInGraph(t *testing.T) {
-	g := InitDirectedGraph(5)
-
-	// Make a cycle 4 -> 2 -> 3 -> 4
-	g.AddEdge(0, 1)
-	g.AddEdge(1, 2)
-	g.AddEdge(2, 3)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 2)
-
-	assert.Equal(t, []int{4, 2, 3, 4}, GetCycleInGraph(g))
+	g := initDAG4Cycled()
+	t.Logf("Check the cycle in the directed graph: %v", g)
+	expected := []int{4, 2, 3, 4}
+	actual := GetCycleInGraph(g)
+	if !reflect.DeepEqual(expected, actual) {
+		t.Errorf("GetCycleInGraph() should have returned [%v], but returned [%v]", expected, actual)
+	}
 }
