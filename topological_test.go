@@ -6,23 +6,6 @@ import (
 	"testing"
 )
 
-func ExampleTopoSort() {
-	// Initialize a directed graph from a file
-	graph, err := LoadDirectedGraph("examples/directed_7.txt")
-	if err != nil {
-		fmt.Printf("Got an error: %v\n", err)
-		os.Exit(2)
-	}
-	fmt.Printf("Initial graph: %v\n", graph)
-
-	// Attempt to topologically sort the graph
-	if order, err := TopoSort(graph); err != nil {
-		fmt.Printf("Cannot do topological sort: %v\n", err)
-	} else {
-		fmt.Printf("Topologically sorted graph (vertex order): %v\n", order)
-	}
-}
-
 func initTestGraph() DirectedGraph {
 	g := InitDirectedGraph(8)
 	g.AddEdge(0, 1)
@@ -90,4 +73,21 @@ func TestTopoSort(t *testing.T) {
 
 func TestTopoSortReverse(t *testing.T) {
 	testTopoSortMethods(t, true, TopoSortReverse)
+}
+
+func ExampleTopoSort() {
+	// Initialize a directed graph from a file
+	graph, err := LoadDirectedGraph("examples/directed_7.txt")
+	if err != nil {
+		fmt.Printf("Got an error: %v\n", err)
+		os.Exit(2)
+	}
+	fmt.Printf("Initial graph: %v\n", graph)
+
+	// Attempt to topologically sort the graph
+	if order, err := TopoSort(graph); err != nil {
+		fmt.Printf("Cannot do topological sort: %v\n", err)
+	} else {
+		fmt.Printf("Topologically sorted graph (vertex order): %v\n", order)
+	}
 }
