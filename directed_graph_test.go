@@ -3,8 +3,6 @@ package graphs
 import (
 	"fmt"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -89,20 +87,31 @@ func TestAddEdges(t *testing.T) {
 }
 
 func TestInitDirectedGraphFromFile(t *testing.T) {
-	graph, err := LoadDirectedGraph("examples/directed_7.txt")
-
-	assert.Nil(t, err)
-	assert.Equal(t, graph.VNum(), 7)
-	assert.Equal(t, graph.ENum(), 7)
+	filename := "examples/directed_7.txt"
+	graph, err := LoadDirectedGraph(filename)
+	testData := []struct {
+		method_name string
+		method      func() int
+		expected    int
+	}{
+		{"graph.VNum()", graph.VNum, 7},
+		{"graph.ENum()", graph.ENum, 7},
+	}
+	if err != nil {
+		t.Errorf("Failed loading graph from file %v. Error: %v", filename, err)
+	}
+	for _, data := range testData {
+		actual := data.method()
+		if data.expected != actual {
+			t.Errorf("%s=%v, but should be %v", data.method_name, actual, data.expected)
+		}
+	}
 }
 
 func TestInitDirectedGraphFromFileErr(t *testing.T) {
-	graph, err := LoadDirectedGraph("examples/directed_err.txt")
-
-	if assert.Error(t, err) {
-		assert.EqualError(t, err, fmt.Sprintf(errInvalidVertex+
-			": strconv.Atoi: parsing \"5k\": invalid syntax", "5k"))
+	_, err := LoadDirectedGraph("examples/directed_err.txt")
+	expectedErr := fmt.Sprintf(errInvalidVertex+": strconv.Atoi: parsing \"5k\": invalid syntax", "5k")
+	if err.Error() != expectedErr {
+		t.Errorf("The error returned should be equal to: [%v]. Actual error is: [%v]", expectedErr, err.Error())
 	}
-
-	assert.Equal(t, 2, graph.ENum())
 }
