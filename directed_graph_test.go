@@ -90,9 +90,9 @@ func TestInitDirectedGraphFromFile(t *testing.T) {
 	filename := "examples/directed_7.txt"
 	graph, err := LoadDirectedGraph(filename)
 	testData := []struct {
-		method_name string
-		method      func() int
-		expected    int
+		methodName string
+		method     func() int
+		expected   int
 	}{
 		{"graph.VNum()", graph.VNum, 7},
 		{"graph.ENum()", graph.ENum, 7},
@@ -103,7 +103,7 @@ func TestInitDirectedGraphFromFile(t *testing.T) {
 	for _, data := range testData {
 		actual := data.method()
 		if data.expected != actual {
-			t.Errorf("%s=%v, but should be %v", data.method_name, actual, data.expected)
+			t.Errorf("%s=%v, but should be %v", data.methodName, actual, data.expected)
 		}
 	}
 }
@@ -111,7 +111,11 @@ func TestInitDirectedGraphFromFile(t *testing.T) {
 func TestInitDirectedGraphFromFileErr(t *testing.T) {
 	_, err := LoadDirectedGraph("examples/directed_err.txt")
 	expectedErr := fmt.Sprintf(errInvalidVertex+": strconv.Atoi: parsing \"5k\": invalid syntax", "5k")
-	if err.Error() != expectedErr {
-		t.Errorf("The error returned should be equal to: [%v]. Actual error is: [%v]", expectedErr, err.Error())
+	if err == nil {
+		t.Errorf("This test should return an error")
+	} else {
+		if err.Error() != expectedErr {
+			t.Errorf("The error returned should be equal to: [%v]. Actual error is: [%v]", expectedErr, err.Error())
+		}
 	}
 }
