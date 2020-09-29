@@ -27,9 +27,9 @@ func TestGraph_HasEdge(t *testing.T) {
 	for _, test := range testDataHasEdge {
 		t.Run(test.name, func(t *testing.T) {
 			g := test.initFunc()
-			t.Logf("Checking graph.HasEdge(%v,%v) method for: %v", g, test.v, test.w)
+			t.Logf("Checking graph.HasEdge(%v,%v) method for: %v", test.v, test.w, g)
 			result := g.HasEdge(test.v, test.w)
-			t.Logf("Expected result: [%v], actual result: [%v]", result, test.expectedHasEdge)
+			t.Logf("Expected result: [%v], actual result: [%v]", test.expectedHasEdge, result)
 			if result != test.expectedHasEdge {
 				t.Fail()
 			}
