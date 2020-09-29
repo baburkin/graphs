@@ -6,20 +6,6 @@ import (
 	"testing"
 )
 
-func initTestGraph() DirectedGraph {
-	g := InitDirectedGraph(8)
-	g.AddEdge(0, 1)
-	g.AddEdge(1, 2)
-	g.AddEdge(1, 5)
-	g.AddEdge(1, 7)
-	g.AddEdge(3, 1)
-	g.AddEdge(3, 4)
-	g.AddEdge(4, 5)
-	g.AddEdge(6, 4)
-	g.AddEdge(6, 7)
-	return g
-}
-
 var (
 	testDataTopoSort = []struct {
 		name     string
