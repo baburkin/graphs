@@ -46,11 +46,17 @@ var (
 	}
 )
 
-func TestTopoSort(t *testing.T) {
+func testTopoSortMethods(t *testing.T, reverse bool, sortFunc func(directedGraph DirectedGraph) ([]int, error)) {
 	for _, test := range testDataTopoSort {
 		t.Run(test.name, func(t *testing.T) {
 			g := test.initFunc()
-			gSorted, err := TopoSort(g)
+			gSorted, err := sortFunc(g)
+			var order string
+			if reverse {
+				order = "after"
+			} else {
+				order = "before"
+			}
 
 			if err != nil {
 				t.Fatalf("Could not topologically sort the graph %v, error: %v", g, err)
@@ -67,8 +73,8 @@ func TestTopoSort(t *testing.T) {
 			}
 			for v, edgesFromV := range g.AllEdges() {
 				for _, w := range edgesFromV {
-					t.Logf("Vertex [%v] should come before [%v]... ", v, w)
-					if sortedIndex[v] >= sortedIndex[w] {
+					t.Logf("Vertex [%v] should come %v [%v]... ", v, order, w)
+					if reverse != (sortedIndex[v] >= sortedIndex[w]) {
 						t.Logf("Error: topological sort is incorrect")
 						t.Fail()
 					}
@@ -78,34 +84,10 @@ func TestTopoSort(t *testing.T) {
 	}
 }
 
+func TestTopoSort(t *testing.T) {
+	testTopoSortMethods(t, false, TopoSort)
+}
+
 func TestTopoSortReverse(t *testing.T) {
-	g := initDAG1()
-	gSorted, err := TopoSortReverse(g)
-
-	// gSorted[2], gSorted[7] = gSorted[7], gSorted[2] <-- used to test path for incorrect sort
-
-	if err != nil {
-		t.Fatalf("Could not topologically sort the graph %v, error: %v", g, err)
-	}
-
-	// Give the output of the initial and sorted graph
-	t.Logf("Initial graph: %v\n", g)
-	t.Logf("Topologically sorted graph: %v\n", gSorted)
-
-	// Validate the topological sort
-	sortedIndex := make([]int, len(gSorted), len(gSorted))
-	for i, v := range gSorted {
-		sortedIndex[v] = i
-	}
-	for v, edgesFromV := range g.AllEdges() {
-		for _, w := range edgesFromV {
-			t.Logf("Vertex [%v] should come before [%v]... ", w, v)
-			if sortedIndex[w] < sortedIndex[v] {
-				t.Logf("OK")
-			} else {
-				t.Logf("Eror")
-				t.Fatal("Topological sort is incorrect")
-			}
-		}
-	}
+	testTopoSortMethods(t, true, TopoSortReverse)
 }
