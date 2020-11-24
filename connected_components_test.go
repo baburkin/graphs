@@ -1,8 +1,11 @@
 package graphs
 
 import (
+	"reflect"
 	"testing"
 )
+
+type digraphFactoryFunc func() DirectedGraph
 
 var (
 	testDataCCCount = []struct {
@@ -32,13 +35,20 @@ var (
 		initGraphFunc  digraphFactoryFunc
 		component      int
 		expectedCCSize int
+		expectedComps  []int
 	}{
-		{"testDAG1", initDAG1, 0, 8},
-		{"testDAG2", initDAG2, 0, 3},
-		{"testDAG2", initDAG2, 1, 3},
-		{"testDAG2", initDAG2, 2, 0},
-		{"testDAG3", initDAG3, 0, 6},
-		{"testDAG3", initDAG3, 1, 0},
+		{"testDAG1", initDAG1, 0, 8,
+			[]int{0, 1, 2, 3, 4, 5, 6, 7}},
+		{"testDAG2", initDAG2, 0, 3,
+			[]int{0, 1, 2}},
+		{"testDAG2", initDAG2, 1, 3,
+			[]int{3, 4, 5}},
+		{"testDAG2", initDAG2, 2, 0,
+			[]int{}},
+		{"testDAG3", initDAG3, 0, 6,
+			[]int{0, 1, 2, 3, 4, 5}},
+		{"testDAG3", initDAG3, 1, 0,
+			[]int{}},
 	}
 )
 
@@ -81,6 +91,21 @@ func TestConnCompSize(t *testing.T) {
 			size := cc.CompSize(test.component)
 			t.Logf("Expected CC size: [%v], actual size: [%v]", test.expectedCCSize, size)
 			if test.expectedCCSize != size {
+				t.Fail()
+			}
+		})
+	}
+}
+
+func TestConnCompComponents(t *testing.T) {
+	for _, test := range testDataCCSize {
+		t.Run(test.name, func(t *testing.T) {
+			g := test.initGraphFunc()
+			cc := InitConnectedComponents(g)
+			t.Logf("Checking connected components from graph: %v", g)
+			comps := cc.Component(test.component)
+			t.Logf("Expected component: [%v], actual component: [%v]", test.expectedComps, comps)
+			if !reflect.DeepEqual(test.expectedComps, comps) {
 				t.Fail()
 			}
 		})
