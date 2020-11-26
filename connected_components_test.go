@@ -43,12 +43,18 @@ var (
 			[]int{0, 1, 2}},
 		{"testDAG2", initDAG2, 1, 3,
 			[]int{3, 4, 5}},
-		{"testDAG2", initDAG2, 2, 0,
-			[]int{}},
 		{"testDAG3", initDAG3, 0, 6,
 			[]int{0, 1, 2, 3, 4, 5}},
-		{"testDAG3", initDAG3, 1, 0,
-			[]int{}},
+	}
+	testDataAllComponents = []struct {
+		name             string
+		initGraphFunc    digraphFactoryFunc
+		expectedAllComps [][]int
+	}{
+		{"testDAG1", initDAG1,
+			[][]int{[]int{0, 1, 2, 3, 4, 5, 6, 7}}},
+		{"testDAG2", initDAG2,
+			[][]int{[]int{0, 1, 2}, []int{3, 4, 5}}},
 	}
 )
 
@@ -106,6 +112,21 @@ func TestConnCompComponents(t *testing.T) {
 			comps := cc.Component(test.component)
 			t.Logf("Expected component: [%v], actual component: [%v]", test.expectedComps, comps)
 			if !reflect.DeepEqual(test.expectedComps, comps) {
+				t.Fail()
+			}
+		})
+	}
+}
+
+func TestConnCompAllComponents(t *testing.T) {
+	for _, test := range testDataAllComponents {
+		t.Run(test.name, func(t *testing.T) {
+			g := test.initGraphFunc()
+			cc := InitConnectedComponents(g)
+			t.Logf("Checking connected components from graph: %v", g)
+			comps := cc.AllComponents()
+			t.Logf("Expected component: [%v], actual component: [%v]", test.expectedAllComps, comps)
+			if !reflect.DeepEqual(test.expectedAllComps, comps) {
 				t.Fail()
 			}
 		})

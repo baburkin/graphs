@@ -88,6 +88,7 @@ func InitConnectedComponents(g Graph) ConnectedComponents {
 			cc.comp = append(cc.comp, []int{})
 		}
 	}
+	cc.comp = cc.comp[:cc.count]
 	for i := range cc.comp {
 		sort.Ints(cc.comp[i])
 	}
