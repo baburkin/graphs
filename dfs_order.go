@@ -40,6 +40,8 @@ func initDFSOrder(g DirectedGraph) *dfsOrder {
 	return newG
 }
 
+// findOrderDFS is a core function of the depth-first search
+// recursive algorithm
 func findOrderDFS(g *dfsOrder, v int) {
 	g.marked[v] = true
 	g.pre[v] = g.preCounter

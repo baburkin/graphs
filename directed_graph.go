@@ -45,7 +45,6 @@ func (g *digraph) AddEdge(v int, w int) bool {
 	return false
 }
 
-// OutDegree
 func (g *digraph) OutDegree(v int) int {
 	return len(g.edges[v])
 }
