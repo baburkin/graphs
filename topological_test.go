@@ -63,7 +63,7 @@ func TestTopoSortReverse(t *testing.T) {
 
 func ExampleTopoSort() {
 	// Initialize a directed graph from a file
-	graph, err := LoadDirectedGraph("examples/directed_7.txt")
+	graph, err := LoadDirectedGraph("example/directed_7.txt")
 	if err != nil {
 		fmt.Printf("Got an error: %v\n", err)
 		os.Exit(2)

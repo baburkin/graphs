@@ -87,7 +87,7 @@ func TestAddEdges(t *testing.T) {
 }
 
 func TestInitDirectedGraphFromFile(t *testing.T) {
-	filename := "examples/directed_7.txt"
+	filename := "example/directed_7.txt"
 	graph, err := LoadDirectedGraph(filename)
 	testData := []struct {
 		methodName string
@@ -109,7 +109,7 @@ func TestInitDirectedGraphFromFile(t *testing.T) {
 }
 
 func TestInitDirectedGraphFromFileErr(t *testing.T) {
-	_, err := LoadDirectedGraph("examples/directed_err.txt")
+	_, err := LoadDirectedGraph("example/directed_err.txt")
 	expectedErr := fmt.Sprintf(errInvalidVertex+": strconv.Atoi: parsing \"5k\": invalid syntax", "5k")
 	if err == nil {
 		t.Errorf("This test should return an error")
