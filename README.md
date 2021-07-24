@@ -2,7 +2,15 @@
 
 ## Introduction
 
-This library provides simple API (data structures and set of algorithms) to use in programs that run algorithms on graphs.
+This library provides simple API (data structures and set of algorithms) to use in programs
+that run algorithms on graphs.
+
+Currently, it has algorithms for computing:
+
+* the shortest path in the graph using BFS (breadth-first search)
+* an order in a directed graph using DFS (depth-first search)
+* a topological order (and its reverse) in a directed graph
+* all connected components (self-connected islands) in a graph
 
 ## Sample Usage
 
