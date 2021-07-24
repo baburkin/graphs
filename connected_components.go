@@ -14,21 +14,24 @@ type ccGraph struct {
 // ConnectedComponents interface provides the API for getting
 // the number of connected components in a graph
 type ConnectedComponents interface {
-	// source Graph
+	// Graph returns the source graph
 	Graph() Graph
-	// index of the
+	// Index returns the connected component index for the vertex v
 	Index(v int) int
-	// sorted slice of vertices in the component of given component ID
+	// Component returns a sorted slice of vertices in the given connected component
 	Component(compID int) []int
-	// size of the component of given component ID
+	// CompSize returns size of the given connected component
 	CompSize(compID int) int
-	// total number of connected components
+	// Count returns total number of connected components
 	Count() int
-	// All component IDs indexed by vertex ID
+	// AllIndices returns all connected components: AllIndices()[v] returns
+	// connected component index for the vertex v
 	AllIndices() []int
-	// All component sizes indexed by component ID
+	// AllCompSizes returns connected component size: AllCompSizes()[i] returns
+	// number of vertices in i-th connected component
 	AllCompSizes() []int
-	// All connected components
+	// AllComponents returns all connected components: AllComponents()[i] returns
+	// a slice of vertices that belong to the i-th connected component
 	AllComponents() [][]int
 }
 
